@@ -15,22 +15,22 @@ class CommandPassthrough(Star):
     def __init__(self, context: Context, config: AstrBotConfig):
         super().__init__(context)
         self.config = config
-        self.prefixes = [
+        self.prefixes = tuple(
             prefix.strip()
             for prefix in getattr(self.config, "prefixes", [])
             if isinstance(prefix, str) and prefix.strip()
-        ]
-        self.priority = getattr(self.config, "priority", -1)
+        )
 
     def _is_passthrough_message(self, event: AstrMessageEvent) -> bool:
         if not self.prefixes:
             return False
 
-        raw_text = event.message_str.lstrip()
-        if not raw_text:
+        message_str = getattr(event, "message_str", "")
+        if not message_str:
             return False
 
-        return any(raw_text.startswith(prefix) for prefix in self.prefixes)
+        raw_text = message_str.lstrip()
+        return raw_text.startswith(self.prefixes)
 
     @filter.event_message_type(EventMessageType.ALL)
     async def on_all_message(self, event: AstrMessageEvent):
