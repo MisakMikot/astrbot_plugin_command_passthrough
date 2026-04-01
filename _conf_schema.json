@@ -1,0 +1,16 @@
+{
+    "prefixes": {
+        "description": "以这些词开头的命令将绕过AI大模型调用，但仍会传递到gscore",
+        "type": "list",
+        "hint": "例如: gs, ww",
+        "items": {
+            "type": "string"
+        },
+        "default": []
+    },
+    "priority": {
+        "description": "插件优先级，数值越小越先执行（建议高于gscore的0）",
+        "type": "int",
+        "default": -1
+    }
+}
